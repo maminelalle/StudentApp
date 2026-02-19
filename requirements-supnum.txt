@@ -1,0 +1,21 @@
+# Dépendances SupNum Share v2.0
+# Plateforme académique
+Flask==3.0.2
+SQLAlchemy==2.0.29
+Werkzeug==3.0.1
+
+# Traitement fichiers
+openpyxl==3.1.2
+PyPDF2==4.1.1
+reportlab==4.0.9
+
+# Sécurité
+bcrypt==4.1.2
+
+# Utilitaires
+python-dotenv==1.0.0
+Pillow==10.1.0
+
+# Production
+gunicorn==21.2.0
+python-dateutil==2.8.2
