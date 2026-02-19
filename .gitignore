@@ -18,6 +18,12 @@ instance/
 *.sqlite
 *.sqlite3
 student_grades.db
+supnum_share.db
+
+# Uploads & Exports
+uploads/
+exports/
+*.log
 
 # IDE
 .vscode/
