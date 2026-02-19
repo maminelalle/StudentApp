@@ -1,0 +1,164 @@
+{% extends "admin/layout.html" %}
+
+{% block title %}Dashboard Admin - Student Grades App{% endblock %}
+
+{% block admin_content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h3 class="mb-0">Tableau de Bord Admin</h3>
+  <div class="btn-group">
+    <a href="{{ url_for('admin_export_csv') }}" class="btn btn-outline-primary btn-sm">Export CSV</a>
+    <a href="{{ url_for('admin_export_excel') }}" class="btn btn-primary btn-sm">Export Excel</a>
+  </div>
+</div>
+
+<div class="row g-3 mb-4">
+  <div class="col-md-3">
+    <div class="card shadow-sm stat-card stat-primary">
+      <div class="card-body">
+        <p class="text-uppercase small mb-1">Total Matières</p>
+        <h3 class="mb-0">{{ total_matieres }}</h3>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="card shadow-sm stat-card stat-info">
+      <div class="card-body">
+        <p class="text-uppercase small mb-1">Total Devoirs</p>
+        <h3 class="mb-0">{{ total_devoirs }}</h3>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="card shadow-sm stat-card stat-success">
+      <div class="card-body">
+        <p class="text-uppercase small mb-1">Total Étudiants</p>
+        <h3 class="mb-0">{{ total_etudiants }}</h3>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="card shadow-sm stat-card stat-warning">
+      <div class="card-body">
+        <p class="text-uppercase small mb-1">Moyenne Générale</p>
+        <h3 class="mb-0">{{ moyenne_generale or '-' }}</h3>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row g-4 mb-4">
+  <div class="col-lg-6">
+    <div class="card shadow-sm">
+      <div class="card-header bg-white">
+        <strong>Étudiants par Filière</strong>
+      </div>
+      <div class="card-body">
+        {% if etudiants_par_filiere %}
+          <ul class="list-group">
+            {% for row in etudiants_par_filiere %}
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              <span><strong>{{ row[0] }}</strong></span>
+              <span class="badge bg-primary rounded-pill">{{ row[1] }}</span>
+            </li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <p class="text-muted mb-0">Aucune donnée disponible.</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-6">
+    <div class="card shadow-sm">
+      <div class="card-header bg-white">
+        <strong>Étudiants par Spécialité</strong>
+      </div>
+      <div class="card-body">
+        {% if etudiants_par_specialite %}
+          <ul class="list-group">
+            {% for row in etudiants_par_specialite %}
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              <span><strong>{{ row[0] }}</strong></span>
+              <span class="badge bg-info rounded-pill">{{ row[1] }}</span>
+            </li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <p class="text-muted mb-0">Aucune donnée disponible.</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row g-4">
+  <div class="col-lg-6">
+    <div class="card shadow-sm">
+      <div class="card-header bg-white">
+        <strong>Répartition des notes</strong>
+      </div>
+      <div class="card-body">
+        {% if repartition_notes %}
+          <ul class="list-group">
+            {% for row in repartition_notes %}
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              <span>Tranche {{ row.range }}</span>
+              <span class="badge bg-primary rounded-pill">{{ row.count }}</span>
+            </li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <p class="text-muted mb-0">Aucune note enregistrée pour le moment.</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-6">
+    <div class="card shadow-sm">
+      <div class="card-header bg-white">
+        <strong>Matières les plus difficiles</strong>
+      </div>
+      <div class="card-body">
+        {% if matieres_difficiles %}
+          <table class="table table-sm table-striped mb-0">
+            <thead>
+              <tr>
+                <th>Matière</th>
+                <th>Moyenne</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for m in matieres_difficiles %}
+              <tr>
+                <td>{{ m[0] }}</td>
+                <td>{{ '%.2f'|format(m[1]) }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        {% else %}
+          <p class="text-muted mb-0">Pas encore assez de données.</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% if filieres %}
+<div class="card shadow-sm mt-4">
+  <div class="card-header bg-white">
+    <strong>Export par Filière</strong>
+  </div>
+  <div class="card-body">
+    <div class="d-flex flex-wrap gap-2">
+      {% for f in filieres %}
+      <a href="{{ url_for('admin_export_excel_filiere', filiere_id=f.id) }}" class="btn btn-outline-success btn-sm">
+        <i class="bi bi-file-earmark-excel"></i> Export {{ f.nom }}
+      </a>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endif %}
+{% endblock %}
+

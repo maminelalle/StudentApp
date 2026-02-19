@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+  <div class="col-md-3 col-lg-2 mb-3">
+    <div class="list-group shadow-sm">
+      <a href="{{ url_for('admin_dashboard') }}" class="list-group-item list-group-item-action {% if request.endpoint == 'admin_dashboard' %}active{% endif %}">
+        <i class="bi bi-speedometer2"></i> Tableau de bord
+      </a>
+      
+      <div class="list-group-item bg-light text-muted small py-1"><strong>ACADÉMIQUE</strong></div>
+      <a href="{{ url_for('admin_filieres') }}" class="list-group-item list-group-item-action {% if 'filiere' in request.endpoint %}active{% endif %}">
+        <i class="bi bi-diagram-3"></i> Filières
+      </a>
+      <a href="{{ url_for('admin_specialites') }}" class="list-group-item list-group-item-action {% if 'specialite' in request.endpoint %}active{% endif %}">
+        <i class="bi bi-mortarboard"></i> Spécialités
+      </a>
+      <a href="{{ url_for('admin_semestres') }}" class="list-group-item list-group-item-action {% if 'semestre' in request.endpoint %}active{% endif %}">
+        <i class="bi bi-calendar3"></i> Semestres
+      </a>
+      <a href="{{ url_for('admin_matieres') }}" class="list-group-item list-group-item-action {% if 'matieres' in request.endpoint %}active{% endif %}">
+        <i class="bi bi-book"></i> Matières
+      </a>
+      
+      <div class="list-group-item bg-light text-muted small py-1"><strong>ÉVALUATIONS</strong></div>
+      <a href="{{ url_for('admin_devoirs') }}" class="list-group-item list-group-item-action {% if 'devoir' in request.endpoint %}active{% endif %}">
+        <i class="bi bi-clipboard-check"></i> Devoirs
+      </a>
+      <a href="{{ url_for('admin_notes') }}" class="list-group-item list-group-item-action {% if 'notes' in request.endpoint %}active{% endif %}">
+        <i class="bi bi-card-list"></i> Notes
+      </a>
+      
+      <div class="list-group-item bg-light text-muted small py-1"><strong>ADMINISTRATION</strong></div>
+      <a href="{{ url_for('admin_utilisateurs') }}" class="list-group-item list-group-item-action {% if 'utilisateur' in request.endpoint %}active{% endif %}">
+        <i class="bi bi-people"></i> Utilisateurs
+      </a>
+      <a href="{{ url_for('admin_statistiques') }}" class="list-group-item list-group-item-action {% if 'statistiques' in request.endpoint %}active{% endif %}">
+        <i class="bi bi-graph-up"></i> Statistiques
+      </a>
+    </div>
+  </div>
+  <div class="col-md-9 col-lg-10">
+    {% block admin_content %}{% endblock %}
+  </div>
+</div>
+{% endblock %}
+

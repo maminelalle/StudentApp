@@ -1,0 +1,55 @@
+{% extends "admin/layout.html" %}
+
+{% block title %}Gestion des Matières - Student Grades App{% endblock %}
+
+{% block admin_content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h3 class="mb-0">Gestion des Matières</h3>
+  <a href="{{ url_for('admin_matiere_new') }}" class="btn btn-primary btn-sm">Ajouter Matière</a>
+</div>
+
+<div class="card shadow-sm">
+  <div class="card-body p-0">
+    <table class="table table-striped mb-0">
+      <thead class="table-light">
+        <tr>
+          <th>Code</th>
+          <th>Nom</th>
+          <th>Semestre</th>
+          <th>Filière</th>
+          <th>Spécialité</th>
+          <th>Seuil</th>
+          <th>Rattrapable</th>
+          <th class="text-end">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for m in matieres %}
+        <tr>
+          <td><strong>{{ m.code }}</strong></td>
+          <td>{{ m.nom }}</td>
+          <td>{% if m.semestre %}<span class="badge bg-info">{{ m.semestre.nom }}</span>{% else %}-{% endif %}</td>
+          <td>{% if m.filiere %}<span class="badge bg-primary">{{ m.filiere.nom }}</span>{% else %}-{% endif %}</td>
+          <td>{% if m.specialite %}<span class="badge bg-secondary">{{ m.specialite.code }}</span>{% else %}-{% endif %}</td>
+          <td>{{ m.seuil_validation }}</td>
+          <td>
+            {% if m.rattrapable %}<span class="badge bg-success">Oui</span>{% else %}<span class="badge bg-secondary">Non</span>{% endif %}
+          </td>
+          <td class="text-end">
+            <a href="{{ url_for('admin_matiere_edit', matiere_id=m.id) }}" class="btn btn-outline-primary btn-sm">Éditer</a>
+            <form method="post" action="{{ url_for('admin_matiere_delete', matiere_id=m.id) }}" class="d-inline" onsubmit="return confirm('Supprimer cette matière ?');">
+              <button type="submit" class="btn btn-outline-danger btn-sm">Supprimer</button>
+            </form>
+          </td>
+        </tr>
+        {% else %}
+        <tr>
+          <td colspan="8" class="text-center text-muted py-4">Aucune matière pour le moment.</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}
+

@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}Mes Devoirs - Student Grades App{% endblock %}
+
+{% block content %}
+<h3 class="mb-4">Mes Devoirs</h3>
+<form method="get" class="mb-3 d-flex gap-2 flex-wrap">
+  <select name="matiere_id" class="form-select form-select-sm" style="max-width:200px" onchange="this.form.submit()">
+    <option value="">Toutes les matières</option>
+    {% for m in matieres %}
+    <option value="{{ m.id }}" {% if matiere_id == m.id %}selected{% endif %}>{{ m.nom }}</option>
+    {% endfor %}
+  </select>
+</form>
+<div class="card shadow-sm">
+  <div class="card-body p-0">
+    <table class="table table-striped mb-0">
+      <thead class="table-light">
+        <tr><th>Devoir</th><th>Matière</th><th>Date limite</th><th>Note</th></tr>
+      </thead>
+      <tbody>
+        {% for d, note in devoirs %}
+        <tr>
+          <td>{{ d.nom }}</td>
+          <td>{{ d.matiere.nom }}</td>
+          <td>{{ d.date.strftime('%d/%m/%Y') if d.date else '-' }}</td>
+          <td>{{ note if note is not none else 'Non noté' }}</td>
+        </tr>
+        {% else %}
+        <tr><td colspan="4" class="text-center text-muted py-4">Aucun devoir.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,46 @@
+{% extends "admin/layout.html" %}
+{% block title %}Gestion des Devoirs - Student Grades App{% endblock %}
+
+{% block admin_content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h3 class="mb-0">Gestion des Devoirs</h3>
+  <a href="{{ url_for('admin_devoir_new') }}" class="btn btn-primary btn-sm">Ajouter Devoir</a>
+</div>
+<div class="card shadow-sm">
+  <div class="card-body p-0">
+    <table class="table table-striped mb-0">
+      <thead class="table-light">
+        <tr>
+          <th>Devoir</th>
+          <th>Matière</th>
+          <th>Type</th>
+          <th>Session</th>
+          <th>Date limite</th>
+          <th class="text-end">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for d in devoirs %}
+        <tr>
+          <td><strong>{{ d.nom }}</strong></td>
+          <td>{{ d.matiere.code }} - {{ d.matiere.nom }}</td>
+          <td><span class="badge bg-info">{{ d.type }}</span></td>
+          <td><span class="badge {% if d.session == 'Rattrapage' %}bg-warning{% else %}bg-success{% endif %}">{{ d.session }}</span></td>
+          <td>{{ d.date.strftime('%d/%m/%Y') if d.date else '-' }}</td>
+          <td class="text-end">
+            <a href="{{ url_for('admin_devoir_edit', devoir_id=d.id) }}" class="btn btn-outline-primary btn-sm">Éditer</a>
+            <form method="post" action="{{ url_for('admin_devoir_delete', devoir_id=d.id) }}" class="d-inline" onsubmit="return confirm('Supprimer ce devoir ?');">
+              <button type="submit" class="btn btn-outline-danger btn-sm">Supprimer</button>
+            </form>
+          </td>
+        </tr>
+        {% else %}
+        <tr>
+          <td colspan="6" class="text-center text-muted py-4">Aucun devoir.</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

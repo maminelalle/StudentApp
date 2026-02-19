@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% block title %}Tableau de bord Étudiant - Student Grades App{% endblock %}
+
+{% block content %}
+<h3 class="mb-4">Tableau de bord Étudiant</h3>
+
+<div class="card shadow-sm mb-4">
+  <div class="card-body">
+    <div class="row">
+      <div class="col-md-3">
+        <p class="mb-1 small text-muted">Nom</p>
+        <p class="mb-0"><strong>{{ etudiant.nom }}</strong></p>
+      </div>
+      <div class="col-md-3">
+        <p class="mb-1 small text-muted">Filière</p>
+        <p class="mb-0">
+          {% if etudiant.filiere %}
+            <span class="badge bg-primary">{{ etudiant.filiere.nom }}</span>
+          {% else %}
+            <span class="text-muted">Non assignée</span>
+          {% endif %}
+        </p>
+      </div>
+      <div class="col-md-3">
+        <p class="mb-1 small text-muted">Spécialité</p>
+        <p class="mb-0">
+          {% if etudiant.specialite %}
+            <span class="badge bg-info">{{ etudiant.specialite.code }} - {{ etudiant.specialite.nom }}</span>
+          {% else %}
+            <span class="text-muted">Non assignée</span>
+          {% endif %}
+        </p>
+      </div>
+      <div class="col-md-3">
+        <p class="mb-1 small text-muted">Moyenne générale</p>
+        <p class="mb-0"><strong class="text-primary fs-4">{{ moyenne_generale|default('-', true) }}</strong></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row g-3 mb-4">
+  <div class="col-12">
+    <div class="card shadow-sm">
+      <div class="card-header bg-white"><strong>Statut des matières</strong></div>
+      <div class="card-body p-0">
+        <table class="table table-striped mb-0">
+          <thead class="table-light">
+            <tr><th>Matière</th><th>Semestre</th><th>Moyenne</th><th>Statut</th></tr>
+          </thead>
+          <tbody>
+            {% for r in resultats %}
+            <tr>
+              <td><strong>{{ r.matiere.nom }}</strong></td>
+              <td>{% if r.matiere.semestre %}<span class="badge bg-secondary">{{ r.matiere.semestre.nom }}</span>{% else %}-{% endif %}</td>
+              <td>{{ r.moyenne|default('-', true) }}</td>
+              <td>
+                {% if r.statut == 'Validée' %}<span class="badge stat-validée">Validée</span>
+                {% elif r.statut == 'À rattraper' %}<span class="badge stat-rattraper">À rattraper</span>
+                {% elif r.statut == 'Non validée' %}<span class="badge stat-non-validee">Non validée</span>
+                {% else %}<span class="badge bg-secondary">{{ r.statut }}</span>{% endif %}
+              </td>
+            </tr>
+            {% else %}
+            <tr><td colspan="4" class="text-muted text-center py-3">Aucune matière.</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="col-12">
+    <p class="small text-muted">Devoirs sans note : {{ devoirs_manquants|length }}</p>
+    <a href="{{ url_for('student_devoirs') }}" class="btn btn-primary btn-sm">Voir mes devoirs</a>
+  </div>
+</div>
+<div class="list-group list-group-horizontal flex-wrap">
+  <a href="{{ url_for('student_matieres') }}" class="list-group-item list-group-item-action">Mes Matières</a>
+  <a href="{{ url_for('student_devoirs') }}" class="list-group-item list-group-item-action">Mes Devoirs</a>
+  <a href="{{ url_for('student_resultats') }}" class="list-group-item list-group-item-action">Mes Résultats</a>
+</div>
+{% endblock %}

@@ -1,0 +1,80 @@
+{% extends "admin/layout.html" %}
+{% block title %}Ajouter Utilisateur - Student Grades App{% endblock %}
+
+{% block admin_content %}
+<h3 class="mb-4">Nouvel utilisateur</h3>
+<div class="card shadow-sm">
+  <div class="card-body">
+    <form method="post">
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label for="nom" class="form-label">Nom <span class="text-danger">*</span></label>
+          <input type="text" class="form-control" id="nom" name="nom" required>
+        </div>
+        <div class="col-md-6 mb-3">
+          <label for="email" class="form-label">Email <span class="text-danger">*</span></label>
+          <input type="email" class="form-control" id="email" name="email" required>
+        </div>
+      </div>
+      
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label for="mot_de_passe" class="form-label">Mot de passe <span class="text-danger">*</span></label>
+          <input type="password" class="form-control" id="mot_de_passe" name="mot_de_passe" required>
+        </div>
+        <div class="col-md-6 mb-3">
+          <label for="role" class="form-label">Rôle <span class="text-danger">*</span></label>
+          <select class="form-select" id="role" name="role" onchange="toggleEtudiantFields()">
+            <option value="etudiant">Étudiant</option>
+            <option value="admin">Admin</option>
+            <option value="enseignant">Enseignant</option>
+          </select>
+        </div>
+      </div>
+      
+      <div id="etudiant-fields">
+        <h5 class="mt-3 mb-3">Informations Étudiant</h5>
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label for="filiere_id" class="form-label">Filière</label>
+            <select class="form-select" id="filiere_id" name="filiere_id">
+              <option value="">-- Non assigné --</option>
+              {% for f in filieres %}
+              <option value="{{ f.id }}">{{ f.nom }} - {{ f.description }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label for="specialite_id" class="form-label">Spécialité</label>
+            <select class="form-select" id="specialite_id" name="specialite_id">
+              <option value="">-- Non assigné --</option>
+              {% for s in specialites %}
+              <option value="{{ s.id }}">{{ s.code }} - {{ s.nom }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+      </div>
+      
+      <div class="d-flex gap-2 mt-3">
+        <button type="submit" class="btn btn-primary">Créer</button>
+        <a href="{{ url_for('admin_utilisateurs') }}" class="btn btn-outline-secondary">Annuler</a>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+function toggleEtudiantFields() {
+  const role = document.getElementById('role').value;
+  const etudiantFields = document.getElementById('etudiant-fields');
+  if (role === 'etudiant') {
+    etudiantFields.style.display = 'block';
+  } else {
+    etudiantFields.style.display = 'none';
+  }
+}
+// Appeler au chargement de la page
+toggleEtudiantFields();
+</script>
+{% endblock %}

@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}Connexion - Student Grades App{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center mt-5">
+  <div class="col-md-5">
+    <div class="card shadow-sm border-0">
+      <div class="card-header bg-primary text-white text-center">
+        <h5 class="mb-0">Connexion</h5>
+      </div>
+      <div class="card-body">
+        <form method="post">
+          <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <div class="input-group">
+              <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+              <input type="email" class="form-control" id="email" name="email" required>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="mot_de_passe" class="form-label">Mot de passe</label>
+            <div class="input-group">
+              <span class="input-group-text"><i class="bi bi-lock"></i></span>
+              <input type="password" class="form-control" id="mot_de_passe" name="mot_de_passe" required>
+            </div>
+          </div>
+          <div class="d-grid gap-2">
+            <button type="submit" class="btn btn-primary">Se connecter</button>
+          </div>
+        </form>
+        <p class="mt-3 text-muted small mb-0">
+          Les comptes étudiants et administrateurs sont créés par l’administrateur de la plateforme.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+

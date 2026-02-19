@@ -1,0 +1,60 @@
+{% extends "admin/layout.html" %}
+{% block title %}{% if devoir %}Modifier{% else %}Ajouter{% endif %} Devoir - Student Grades App{% endblock %}
+
+{% block admin_content %}
+<h3 class="mb-4">{% if devoir %}Modifier le devoir{% else %}Nouveau devoir{% endif %}</h3>
+<div class="card shadow-sm">
+  <div class="card-body">
+    <form method="post">
+      <div class="mb-3">
+        <label for="nom" class="form-label">Nom du devoir <span class="text-danger">*</span></label>
+        <input type="text" class="form-control" id="nom" name="nom" required
+               value="{{ devoir.nom if devoir else '' }}">
+      </div>
+      
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label for="matiere_id" class="form-label">Matière <span class="text-danger">*</span></label>
+          <select class="form-select" id="matiere_id" name="matiere_id" required>
+            {% for m in matieres %}
+            <option value="{{ m.id }}" {% if devoir and devoir.matiere_id == m.id %}selected{% endif %}>
+              {{ m.code }} - {{ m.nom }}
+            </option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="col-md-6 mb-3">
+          <label for="date" class="form-label">Date limite <span class="text-danger">*</span></label>
+          <input type="date" class="form-control" id="date" name="date" required
+                 value="{{ devoir.date.isoformat() if devoir and devoir.date else '' }}">
+        </div>
+      </div>
+      
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label for="type" class="form-label">Type de devoir <span class="text-danger">*</span></label>
+          <select class="form-select" id="type" name="type" required>
+            <option value="TP" {% if devoir and devoir.type == 'TP' %}selected{% endif %}>TP</option>
+            <option value="Écrit" {% if devoir and devoir.type == 'Écrit' or not devoir %}selected{% endif %}>Écrit</option>
+            <option value="Projet" {% if devoir and devoir.type == 'Projet' %}selected{% endif %}>Projet</option>
+            <option value="Examen" {% if devoir and devoir.type == 'Examen' %}selected{% endif %}>Examen</option>
+            <option value="Rattrapage" {% if devoir and devoir.type == 'Rattrapage' %}selected{% endif %}>Rattrapage</option>
+          </select>
+        </div>
+        <div class="col-md-6 mb-3">
+          <label for="session" class="form-label">Session <span class="text-danger">*</span></label>
+          <select class="form-select" id="session" name="session" required>
+            <option value="Normale" {% if devoir and devoir.session == 'Normale' or not devoir %}selected{% endif %}>Normale</option>
+            <option value="Rattrapage" {% if devoir and devoir.session == 'Rattrapage' %}selected{% endif %}>Rattrapage</option>
+          </select>
+        </div>
+      </div>
+      
+      <div class="d-flex gap-2">
+        <button type="submit" class="btn btn-primary">Enregistrer</button>
+        <a href="{{ url_for('admin_devoirs') }}" class="btn btn-outline-secondary">Annuler</a>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

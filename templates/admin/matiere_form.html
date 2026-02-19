@@ -1,0 +1,74 @@
+{% extends "admin/layout.html" %}
+{% block title %}{% if matiere %}Modifier{% else %}Ajouter{% endif %} Matière - Student Grades App{% endblock %}
+
+{% block admin_content %}
+<h3 class="mb-4">{% if matiere %}Modifier la matière{% else %}Nouvelle matière{% endif %}</h3>
+<div class="card shadow-sm">
+  <div class="card-body">
+    <form method="post">
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label for="code" class="form-label">Code de la matière <span class="text-danger">*</span></label>
+          <input type="text" class="form-control" id="code" name="code" required
+                 value="{{ matiere.code if matiere else '' }}" placeholder="Ex: INFO101, MATH201">
+        </div>
+        <div class="col-md-6 mb-3">
+          <label for="nom" class="form-label">Nom de la matière <span class="text-danger">*</span></label>
+          <input type="text" class="form-control" id="nom" name="nom" required
+                 value="{{ matiere.nom if matiere else '' }}">
+        </div>
+      </div>
+      
+      <div class="row">
+        <div class="col-md-4 mb-3">
+          <label for="semestre_id" class="form-label">Semestre</label>
+          <select class="form-select" id="semestre_id" name="semestre_id">
+            <option value="">-- Non assigné --</option>
+            {% for s in semestres %}
+            <option value="{{ s.id }}" {% if matiere and matiere.semestre_id == s.id %}selected{% endif %}>{{ s.nom }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="col-md-4 mb-3">
+          <label for="filiere_id" class="form-label">Filière</label>
+          <select class="form-select" id="filiere_id" name="filiere_id">
+            <option value="">-- Toutes --</option>
+            {% for f in filieres %}
+            <option value="{{ f.id }}" {% if matiere and matiere.filiere_id == f.id %}selected{% endif %}>{{ f.nom }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="col-md-4 mb-3">
+          <label for="specialite_id" class="form-label">Spécialité</label>
+          <select class="form-select" id="specialite_id" name="specialite_id">
+            <option value="">-- Toutes --</option>
+            {% for sp in specialites %}
+            <option value="{{ sp.id }}" {% if matiere and matiere.specialite_id == sp.id %}selected{% endif %}>{{ sp.code }} - {{ sp.nom }}</option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+      
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label for="seuil_validation" class="form-label">Seuil de validation (sur 20)</label>
+          <input type="number" step="0.01" min="0" max="20" class="form-control" id="seuil_validation"
+                 name="seuil_validation" value="{{ matiere.seuil_validation if matiere else 10 }}">
+        </div>
+        <div class="col-md-6 mb-3 d-flex align-items-end">
+          <div class="form-check">
+            <input type="checkbox" class="form-check-input" id="rattrapable" name="rattrapable"
+                   {% if not matiere or matiere.rattrapable %}checked{% endif %}>
+            <label class="form-check-label" for="rattrapable">Matière rattrapable</label>
+          </div>
+        </div>
+      </div>
+      
+      <div class="d-flex gap-2">
+        <button type="submit" class="btn btn-primary">Enregistrer</button>
+        <a href="{{ url_for('admin_matieres') }}" class="btn btn-outline-secondary">Annuler</a>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

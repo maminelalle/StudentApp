@@ -1,0 +1,84 @@
+{% extends "admin/layout.html" %}
+{% block title %}Gestion des Notes - Student Grades App{% endblock %}
+
+{% block admin_content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h3 class="mb-0">Gestion des Notes</h3>
+  <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#modalNote">Ajouter Note</button>
+</div>
+<div class="card shadow-sm">
+  <div class="card-body p-0">
+    <table class="table table-striped mb-0">
+      <thead class="table-light">
+        <tr>
+          <th>Étudiant</th>
+          <th>Devoir</th>
+          <th>Matière</th>
+          <th>Note</th>
+          <th class="text-end">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for n in notes %}
+        <tr>
+          <td>{{ n.etudiant.nom }}</td>
+          <td>{{ n.devoir.nom }}</td>
+          <td>{{ n.devoir.matiere.nom }}</td>
+          <td>{{ n.valeur }}</td>
+          <td class="text-end">
+            <form method="post" action="{{ url_for('admin_note_delete', note_id=n.id) }}" class="d-inline" onsubmit="return confirm('Supprimer cette note ?');">
+              <button type="submit" class="btn btn-outline-danger btn-sm">Supprimer</button>
+            </form>
+          </td>
+        </tr>
+        {% else %}
+        <tr>
+          <td colspan="5" class="text-center text-muted py-4">Aucune note.</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="modal fade" id="modalNote" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Ajouter une note</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <form method="post" action="{{ url_for('admin_note_new') }}">
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="etudiant_id" class="form-label">Étudiant</label>
+            <select class="form-select" id="etudiant_id" name="etudiant_id" required>
+              <option value="">-- Choisir --</option>
+              {% for e in etudiants %}
+              <option value="{{ e.id }}">{{ e.nom }} ({{ e.email }})</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="devoir_id" class="form-label">Devoir</label>
+            <select class="form-select" id="devoir_id" name="devoir_id" required>
+              <option value="">-- Choisir --</option>
+              {% for d in devoirs %}
+              <option value="{{ d.id }}">{{ d.nom }} ({{ d.matiere.nom }})</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="valeur" class="form-label">Note (0-20)</label>
+            <input type="number" step="0.01" min="0" max="20" class="form-control" id="valeur" name="valeur" required>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+          <button type="submit" class="btn btn-primary">Enregistrer</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

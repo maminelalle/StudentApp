@@ -1,0 +1,29 @@
+/* Student Grades App - Thème */
+:root {
+  --primary: #4A90E2;
+  --validée: #7ED321;
+  --rattraper: #F5A623;
+  --non-validee: #D0021B;
+  --bg-page: #F4F4F4;
+  --text: #333333;
+}
+
+body.bg-page { background-color: var(--bg-page); color: var(--text); }
+.navbar.bg-primary { background-color: var(--primary) !important; }
+
+.stat-card { border-left: 4px solid var(--primary); }
+.stat-card.stat-primary { border-left-color: var(--primary); }
+.stat-card.stat-info { border-left-color: #6c757d; }
+.stat-card.stat-success { border-left-color: var(--validée); }
+.stat-card.stat-warning { border-left-color: var(--rattraper); }
+.stat-card.stat-non-validee { border-left-color: var(--non-validee); }
+
+.badge.stat-validée { background-color: var(--validée); color: #333; }
+.badge.stat-rattraper { background-color: var(--rattraper); color: #333; }
+.badge.stat-non-validee { background-color: var(--non-validee); color: #fff; }
+
+.list-group-item.active { background-color: var(--primary); border-color: var(--primary); }
+.btn-primary { background-color: var(--primary); border-color: var(--primary); }
+.btn-primary:hover { background-color: #3a7bc8; border-color: #3a7bc8; }
+
+.card-header.bg-white { background: #fff; }

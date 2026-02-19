@@ -1,0 +1,39 @@
+{% extends "admin/layout.html" %}
+
+{% block title %}{{ 'Modifier' if specialite else 'Nouvelle' }} Spécialité - Student Grades App{% endblock %}
+
+{% block admin_content %}
+<h3 class="mb-4">{{ 'Modifier' if specialite else 'Nouvelle' }} Spécialité</h3>
+
+<div class="card shadow-sm">
+  <div class="card-body">
+    <form method="POST">
+      <div class="mb-3">
+        <label for="code" class="form-label">Code <span class="text-danger">*</span></label>
+        <input type="text" class="form-control" id="code" name="code" value="{{ specialite.code if specialite else '' }}" required placeholder="Ex: DSI, RSS, CNM">
+      </div>
+      <div class="mb-3">
+        <label for="nom" class="form-label">Nom <span class="text-danger">*</span></label>
+        <input type="text" class="form-control" id="nom" name="nom" value="{{ specialite.nom if specialite else '' }}" required>
+      </div>
+      <div class="mb-3">
+        <label for="filiere_id" class="form-label">Filière <span class="text-danger">*</span></label>
+        <select class="form-select" id="filiere_id" name="filiere_id" required>
+          <option value="">-- Sélectionner --</option>
+          {% for f in filieres %}
+          <option value="{{ f.id }}" {% if specialite and specialite.filiere_id == f.id %}selected{% endif %}>{{ f.nom }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="mb-3">
+        <label for="description" class="form-label">Description</label>
+        <textarea class="form-control" id="description" name="description" rows="3">{{ specialite.description if specialite else '' }}</textarea>
+      </div>
+      <div class="d-flex gap-2">
+        <button type="submit" class="btn btn-primary">Enregistrer</button>
+        <a href="{{ url_for('admin_specialites') }}" class="btn btn-secondary">Annuler</a>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

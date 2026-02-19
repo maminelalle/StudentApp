@@ -1,0 +1,101 @@
+{% extends "admin/layout.html" %}
+{% block title %}Gestion des Utilisateurs - Student Grades App{% endblock %}
+
+{% block admin_content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h3 class="mb-0">Gestion des Utilisateurs</h3>
+  <div>
+    <a href="{{ url_for('admin_export_excel') }}" class="btn btn-primary btn-sm me-2">
+      <i class="bi bi-file-earmark-excel"></i> Télécharger toutes les notes
+    </a>
+    <a href="{{ url_for('admin_utilisateur_new') }}" class="btn btn-success btn-sm">
+      <i class="bi bi-person-plus"></i> Ajouter Utilisateur
+    </a>
+  </div>
+</div>
+
+<h5 class="mt-4 mb-3">Administrateurs et Enseignants</h5>
+<div class="card shadow-sm mb-4">
+  <div class="card-body p-0">
+    <table class="table table-striped mb-0">
+      <thead class="table-light">
+        <tr>
+          <th>Nom</th>
+          <th>Email</th>
+          <th>Rôle</th>
+          <th class="text-end">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for u in utilisateurs %}
+        <tr>
+          <td>{{ u.nom }}</td>
+          <td>{{ u.email }}</td>
+          <td><span class="badge bg-primary">{{ u.role|capitalize }}</span></td>
+          <td class="text-end">
+            <form method="post" action="{{ url_for('admin_utilisateur_delete', type='utilisateur', user_id=u.id) }}" class="d-inline" onsubmit="return confirm('Supprimer cet utilisateur ?');">
+              <button type="submit" class="btn btn-outline-danger btn-sm">Supprimer</button>
+            </form>
+          </td>
+        </tr>
+        {% else %}
+        <tr>
+          <td colspan="4" class="text-center text-muted py-2">Aucun administrateur ou enseignant.</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<h5 class="mb-3">Étudiants</h5>
+<div class="card shadow-sm">
+  <div class="card-body p-0">
+    <table class="table table-striped mb-0">
+      <thead class="table-light">
+        <tr>
+          <th>Nom</th>
+          <th>Email</th>
+          <th>Filière</th>
+          <th>Spécialité</th>
+          <th class="text-end">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for e in etudiants %}
+        <tr>
+          <td><strong>{{ e.nom }}</strong></td>
+          <td>{{ e.email }}</td>
+          <td>
+            {% if e.filiere %}
+            <span class="badge bg-primary">{{ e.filiere.nom }}</span>
+            {% else %}
+            <span class="text-muted">-</span>
+            {% endif %}
+          </td>
+          <td>
+            {% if e.specialite %}
+            <span class="badge bg-info">{{ e.specialite.code }}</span>
+            {% else %}
+            <span class="text-muted">-</span>
+            {% endif %}
+          </td>
+          <td class="text-end">
+            <a href="{{ url_for('admin_export_excel_etudiant', etudiant_id=e.id) }}" class="btn btn-outline-success btn-sm" title="Export Excel">
+              <i class="bi bi-file-earmark-excel"></i>
+            </a>
+            <form method="post" action="{{ url_for('admin_utilisateur_delete', type='etudiant', user_id=e.id) }}" class="d-inline" onsubmit="return confirm('Supprimer cet étudiant ?');">
+              <button type="submit" class="btn btn-outline-danger btn-sm">Supprimer</button>
+            </form>
+          </td>
+        </tr>
+        {% else %}
+        <tr>
+          <td colspan="5" class="text-center text-muted py-2">Aucun étudiant.</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Mes Matières - Student Grades App{% endblock %}
+
+{% block content %}
+<h3 class="mb-4">Mes Matières</h3>
+<p class="mb-3">Moyenne générale : <strong class="text-primary">{{ moyenne_generale|default('-', true) }}</strong></p>
+<div class="card shadow-sm">
+  <div class="card-body p-0">
+    <table class="table table-striped mb-0">
+      <thead class="table-light">
+        <tr><th>Matière</th><th>Moyenne</th><th>Statut</th></tr>
+      </thead>
+      <tbody>
+        {% for r in resultats %}
+        <tr>
+          <td>{{ r.matiere.nom }}</td>
+          <td>{{ r.moyenne|default('-', true) }}</td>
+          <td>
+            {% if r.statut == 'Validée' %}<span class="badge stat-validée">Validée</span>
+            {% elif r.statut == 'À rattraper' %}<span class="badge stat-rattraper">À rattraper</span>
+            {% elif r.statut == 'Non validée' %}<span class="badge stat-non-validee">Non validée</span>
+            {% else %}<span class="badge bg-secondary">{{ r.statut }}</span>{% endif %}
+          </td>
+        </tr>
+        {% else %}
+        <tr><td colspan="3" class="text-center text-muted py-4">Aucune matière.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}
